@@ -7,7 +7,8 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-plt.style.use('seaborn-darkgrid')
+#plt.style.use('seaborn-darkgrid')
+plt.style.use('ggplot')  # or 'default'
 
 # ---------------------- TITLE ----------------------
 st.set_page_config(page_title="Fake News Detector", layout="centered")
