@@ -43,7 +43,7 @@ if true_file and false_file:
     y = df['label']
 
     # Vectorization
-    vectorizer = TfidfVectorizer(stop_words='english')
+    vectorizer = TfidfVectorizer(stop_words='english',max_df=0.7)
     X_tfidf = vectorizer.fit_transform(X)
 
     # Train-test split
