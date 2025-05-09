@@ -6,25 +6,23 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# 1. Load the CSVs
-# Read the true (real) and false (fake) news articles
+
 true_df = pd.read_csv("/content/True.csv.zip")
 false_df = pd.read_csv("/content/Fake.csv.zip")
 
-# 2. Add labels for each dataset
+
 true_df['label'] = 1  # 1 means real news
 false_df['label'] = 0  # 0 means fake news
 
-# 3. Combine both datasets into one dataframe
+
 df = pd.concat([true_df, false_df], ignore_index=True)
 
-# 4. Shuffle the data to mix fake and real news
+
 df = df.sample(frac=1, random_state=42).reset_index(drop=True)
 
-# 5. Feature and target columns
 X = df['text']  # Text data
 y = df['label']  # Labels (0 for fake, 1 for real)
-# 6. Preprocessing:
+
 import re
 
 def clean_text(text):
@@ -35,21 +33,21 @@ def clean_text(text):
 
 df['text'] = df['text'].apply(clean_text)
 
-# 6. Preprocessing: Convert text data into numerical format using TF-IDF Vectorizer
+#  Preprocessing: Convert text data into numerical format using TF-IDF Vectorizer
 vectorizer = TfidfVectorizer(stop_words='english')
 X_tfidf = vectorizer.fit_transform(X)
 
-# 7. Split the data into train and test sets (80% train, 20% test)
+# Split the data into train and test sets (80% train, 20% test)
 X_train, X_test, y_train, y_test = train_test_split(X_tfidf, y, test_size=0.2, random_state=42)
 
-# 8. Train the model using Logistic Regression
+#  Train the model using Logistic Regression
 model = LogisticRegression()
 model.fit(X_train, y_train)
 
-# 9. Prediction on Test Data
+# Prediction on Test Data
 y_pred = model.predict(X_test)
 
-# 10. Evaluate the model
+#  Evaluate the model
 accuracy = accuracy_score(y_test, y_pred)
 print(f"Accuracy: {accuracy * 100:.2f}%")
 
