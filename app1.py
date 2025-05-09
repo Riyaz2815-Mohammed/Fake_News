@@ -14,15 +14,15 @@ plt.style.use('ggplot')  # or 'default'
 st.set_page_config(page_title="Fake News Detector", layout="centered")
 st.title("📰 Fake News Detection Web App")
 
-# ------------- SIDEBAR ---------
+# --------- SIDEBAR ---------
 st.sidebar.title("About")
 st.sidebar.info("🚀 This app detects whether a news article is **Fake** or **Real** using Natural Language Processing and Machine Learning.\n\nBuilt with ❤️ using Streamlit & Scikit-learn.")
 
-# ----------- FILE UPLOAD -------
+# -------- FILE UPLOAD -------
 true_file = st.file_uploader("Upload True News CSV (Real)", type="csv")
 false_file = st.file_uploader("Upload Fake News CSV (Fake)", type="csv")
 
-# ---------- MAIN PROCESS -------
+# -------- MAIN PROCESS -----
 if true_file and false_file:
     true_df = pd.read_csv(true_file)
     false_df = pd.read_csv(false_file)
