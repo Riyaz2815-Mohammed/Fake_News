@@ -1,0 +1,75 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# 1. Load the CSVs
+# Read the true (real) and false (fake) news articles
+true_df = pd.read_csv("/content/True.csv.zip")
+false_df = pd.read_csv("/content/Fake.csv.zip")
+
+# 2. Add labels for each dataset
+true_df['label'] = 1  # 1 means real news
+false_df['label'] = 0  # 0 means fake news
+
+# 3. Combine both datasets into one dataframe
+df = pd.concat([true_df, false_df], ignore_index=True)
+
+# 4. Shuffle the data to mix fake and real news
+df = df.sample(frac=1, random_state=42).reset_index(drop=True)
+
+# 5. Feature and target columns
+X = df['text']  # Text data
+y = df['label']  # Labels (0 for fake, 1 for real)
+# 6. Preprocessing:
+import re
+
+def clean_text(text):
+    text = text.lower()
+    text = re.sub(r'[^\w\s]', '', text)  # Remove punctuation
+    text = re.sub(r'\s+', ' ', text)  # Remove extra spaces
+    return text
+
+df['text'] = df['text'].apply(clean_text)
+
+# 6. Preprocessing: Convert text data into numerical format using TF-IDF Vectorizer
+vectorizer = TfidfVectorizer(stop_words='english')
+X_tfidf = vectorizer.fit_transform(X)
+
+# 7. Split the data into train and test sets (80% train, 20% test)
+X_train, X_test, y_train, y_test = train_test_split(X_tfidf, y, test_size=0.2, random_state=42)
+
+# 8. Train the model using Logistic Regression
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# 9. Prediction on Test Data
+y_pred = model.predict(X_test)
+
+# 10. Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy: {accuracy * 100:.2f}%")
+
+# 11. Confusion Matrix
+conf_matrix = confusion_matrix(y_test, y_pred)
+print("Confusion Matrix:\n", conf_matrix)
+
+# 12. Classification Report: Precision, Recall, F1-Score
+class_report = classification_report(y_test, y_pred)
+print("Classification Report:\n", class_report)
+
+# 13. F1-Score (specific measure)
+from sklearn.metrics import f1_score
+f1 = f1_score(y_test, y_pred)
+print(f"F1 Score: {f1:.2f}")
+
+# 14. Visualizing the Confusion Matrix
+plt.figure(figsize=(6, 5))
+sns.heatmap(conf_matrix, annot=True, fmt="d", cmap="Blues", xticklabels=['Fake', 'Real'], yticklabels=['Fake', 'Real'])
+plt.title("Confusion Matrix")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.show()
