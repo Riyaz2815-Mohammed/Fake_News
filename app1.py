@@ -83,6 +83,6 @@ if true_file and false_file:
         else:
             st.warning("Please enter some text to check.")
 
-# ---------------------- FOOTER ----------------------
+# ------------ FOOTER -----------
 st.markdown("---")
 st.markdown("Made with ❤️ by | Powered by `Streamlit` & `Scikit-learn`")
