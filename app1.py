@@ -69,7 +69,7 @@ if true_file and false_file:
     plt.title("Confusion Matrix")
     st.pyplot(fig)
 
-    # --------- USER INPUT --------------
+    # -- USER INPUT --
     st.subheader("📝 Test a News Article")
     user_input = st.text_area("Enter the news content below:")
     if st.button("Check if Real or Fake"):
@@ -83,6 +83,6 @@ if true_file and false_file:
         else:
             st.warning("Please enter some text to check.")
 
-# ------------ FOOTER -----------
+#  --FOOTER --
 st.markdown("---")
 st.markdown("Made with ❤️ by | Powered by `Streamlit` & `Scikit-learn`")
